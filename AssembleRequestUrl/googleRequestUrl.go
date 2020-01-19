@@ -3,6 +3,7 @@ package AssembleRequestUrl
 import (
 	"DefineWord/Parse"
 	"errors"
+	"net/url"
 	"unicode"
 )
 
@@ -51,9 +52,7 @@ func AssembleGoogleRequestUrl(line *Parse.CommandLine) (*string, error) {
 		t.sl = "en"
 		t.tl = "zh-CN"
 	}
-	t.q = line.Word
-
+	t.q = url.QueryEscape(line.Word)
 	urlStr := "http://translate.google.cn/translate_a/single?" + "client=" + t.client + "&" + "dt=" + t.dt + "&" + "ie=" + t.ie + "&" + "oe=" + t.oe + "&" + "sl=" + t.sl + "&" + "tl=" + t.tl + "&" + "q=" + t.q
-
 	return &urlStr, nil
 }
