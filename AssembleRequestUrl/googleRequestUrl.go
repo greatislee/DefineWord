@@ -3,29 +3,57 @@ package AssembleRequestUrl
 import (
 	"DefineWord/Parse"
 	"errors"
+	"unicode"
 )
 
 type UrlStruct struct {
 	client string
-	sl     string
-	tl     string
-	hl     string
-	dt     [8]string
-	souce  string
-	ssel   string
-	tsel   string
-	kc     string
-	tk     float32
-	Q      string
+	dt     string
+	ie     string
+	oe     string
+	sl     string //origin language
+	tl     string //target language
+	q      string
 }
 
-func AssembleGoogleRequestUrl(line *Parse.CommandLine) (*UrlStruct, error) {
+// if han  return true
+func checkHan(checkStr string) bool {
+	if len(checkStr) == 0 {
+		return false
+	}
+	for _, v := range checkStr {
+		if unicode.Is(unicode.Han, v) {
+			return true
+		}
+	}
+	return false
+}
+
+func AssembleGoogleRequestUrl(line *Parse.CommandLine) (*string, error) {
 	if line == nil {
 		return nil, errors.New("invalid commandline")
 	}
 
-	t := &UrlStruct{
-		Q: line.Word,
+	t := UrlStruct{
+		client: "gtx",
+		dt:     "t",
+		ie:     "UTF-8",
+		oe:     "UTF-8",
+		sl:     "",
+		tl:     "",
+		q:      "",
 	}
-	return t, nil
+
+	if checkHan(line.Word) {
+		t.sl = "zh-CN"
+		t.tl = "en"
+	} else {
+		t.sl = "en"
+		t.tl = "zh-CN"
+	}
+	t.q = line.Word
+
+	urlStr := "http://translate.google.cn/translate_a/single?" + "client=" + t.client + "&" + "dt=" + t.dt + "&" + "ie=" + t.ie + "&" + "oe=" + t.oe + "&" + "sl=" + t.sl + "&" + "tl=" + t.tl + "&" + "q=" + t.q
+
+	return &urlStr, nil
 }
