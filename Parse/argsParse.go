@@ -2,7 +2,6 @@ package Parse
 
 import (
 	"errors"
-	"fmt"
 	"os"
 )
 
@@ -28,6 +27,5 @@ func ParseArgs() (*CommandLine, error) {
 	commandL := &CommandLine{
 		Word: strTemp,
 	}
-	fmt.Println(commandL.Word)
 	return commandL, nil
 }
