@@ -2,6 +2,7 @@ package Parse
 
 import (
 	"errors"
+	"fmt"
 	"os"
 )
 
@@ -16,8 +17,17 @@ func ParseArgs() (*CommandLine, error) {
 	if os.Args[1] == "--help" {
 		return nil, errors.New("Usage: dw word")
 	}
-	commandL := &CommandLine{
-		Word: os.Args[1],
+
+	var strTemp string
+	for i := range os.Args {
+		if i == 0 {
+			continue
+		}
+		strTemp += os.Args[i] + " "
 	}
+	commandL := &CommandLine{
+		Word: strTemp,
+	}
+	fmt.Println(commandL.Word)
 	return commandL, nil
 }
