@@ -19,7 +19,7 @@ func GetResponse(str *string) (*string, error) {
 
 	res, err := client.Get(*str)
 	if err != nil {
-		return nil, errors.New("GetResponse: " + "[Do] " + err.Error())
+		return nil, errors.New("GetResponse: " + "[Get] " + err.Error())
 	}
 	defer res.Body.Close()
 
